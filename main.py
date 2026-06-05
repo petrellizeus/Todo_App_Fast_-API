@@ -46,11 +46,23 @@ def get_html_layout(title: str, content: str) -> str:
 
 @app.get("/", response_class=HTMLResponse)
 def read_root():
-    content = "<h1>WELCOME TO PETRELLI'S TEST PAGE</h1><p>Stranger - Frank</p>"
+    with open("index.html", "r", encoding="utf-8") as file:
+        html_content = file.read()
+    
+    return html_content
+
+@app.get("/greeting", response_class=HTMLResponse)
+def read_root(name: str | None = None):
+    content = f"""
+        <h1>
+            WELCOME TO PETRELLI'S TEST PAGE, AM SO GLAD TO HAVE YOU HERE! am sorry, there's nothing much to see here yet
+        </h1>
+        <p>{name}</p>
+    """
     return get_html_layout("Home", content)
 
 
-@app.get("/items/{{item_id}}", response_class=HTMLResponse)
+@app.get("/items/{item_id}", response_class=HTMLResponse)
 def read_item(item_id: int, q: str | None = None):
     content = f"""
         <h1>Item Details</h1>
